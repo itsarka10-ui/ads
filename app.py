@@ -8,7 +8,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-mp_pose = mp.solutions.pose
+import mediapipe.python.solutions.pose as mp_pose
 pose = mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5)
 
 def analyze_mechanics(video_path):
