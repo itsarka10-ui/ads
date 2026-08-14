@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify
 import cv2
-import mediapipe as mp
 import numpy as np
 import os
 
@@ -8,7 +7,13 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-import mediapipe.python.solutions.pose as mp_pose
+# Safe dynamic fallback for MediaPipe imports
+try:
+    import mediapipe as mp
+    mp_pose = mp.solutions.pose
+except AttributeError:
+    import mediapipe.python.solutions.pose as mp_pose
+
 pose = mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5)
 
 def analyze_mechanics(video_path):
