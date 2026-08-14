@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket AI Analytics Portal</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        header { background: #0f2027; color: white; padding: 20px; text-align: center; border-radius: 8px; }
+        .container { max-width: 1000px; margin: 20px auto; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .bio-link { display: block; padding: 10px; margin: 5px 0; background: #eef2f3; text-decoration: none; color: #0f2027; font-weight: bold; border-left: 4px solid #00c6ff; }
+        button { background: #00c6ff; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CricAI: Performance & Biographies Portal</h1>
+    <p>Upload your videos to test Bat Speed & Bowling Mechanics against the world's best.</p>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>AI Lab: Analyse Batting & Bowling</h2>
+        <form id="uploadForm">
+            <input type="file" id="videoInput" accept="video/*" required><br><br>
+            <button type="submit">Run Mechanics Diagnosis</button>
+        </form>
+        <div id="results" style="margin-top: 20px; display: none;">
+            <h3>Analysis Results:</h3>
+            <p><strong>Metrics:</strong> <span id="metricText"></span></p>
+            <p><strong>Coach's Advice:</strong> <span id="feedbackText"></span></p>
+            <p><strong>Pro Comparison:</strong> <span id="comparisonText"></span></p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Legend Biographies</h2>
+        <a href="#" class="bio-link">Sachin Tendulkar: The Master Blaster's Mindset</a>
+        <a href="#" class="bio-link">MS Dhoni: Decoding Ultimate Match Awareness</a>
+        <a href="#" class="bio-link">Sir Vivian Richards: Unmatched Bat Speed Secrets</a>
+    </div>
+</div>
+
+<script>
+    document.getElementById('uploadForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        const fileInput = document.getElementById('videoInput');
+        formData.append('video', fileInput.files[0]);
+        
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('metricText').innerText = "Analyzing dynamic movement frames...";
+        document.getElementById('feedbackText').innerText = "";
+        document.getElementById('comparisonText').innerText = "";
+        
+        const response = await fetch('/analyze', { method: 'POST', body: formData });
+        const data = await response.json();
+        
+        document.getElementById('metricText').innerText = data.calculated_metric;
+        document.getElementById('feedbackText').innerText = data.feedback;
+        document.getElementById('comparisonText').innerText = data.comparison;
+    };
+</script>
+
+</body>
+</html>
